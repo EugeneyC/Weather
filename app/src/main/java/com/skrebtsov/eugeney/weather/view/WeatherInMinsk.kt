@@ -36,5 +36,7 @@ class WeatherInMinsk : MvpAppCompatActivity(),
 
     override fun showError() {
         binding.tempInMinsk.text = "Error connecting server"
+        binding.weatherDescriptionInMinsk.text = ""
+        binding.windInMinsk.text = ""
     }
 }

@@ -56,5 +56,7 @@ class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
 
     override fun showError() {
         binding.tempInCity.text = "Error connecting server"
+        binding.weatherDescriptionInCity.text = ""
+        binding.windInCity.text = ""
     }
 }
