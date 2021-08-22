@@ -8,14 +8,15 @@ import moxy.InjectViewState
 import moxy.MvpPresenter
 
 @InjectViewState
-class WeatherInCityActivityPresenter: MvpPresenter<ContractWeatherByCity>() {
+class WeatherInCityActivityPresenter : MvpPresenter<ContractWeatherByCity>() {
 
-    fun getWeatherByCity(city:String){
+    fun getWeatherByCity(city: String) {
         WeatherApi.create().getWeatherInCity(city)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                viewState.showWeather(it)
-            }
+            .subscribe({ viewState.showWeather(it) },
+                {
+                    viewState.showError()
+                })
     }
 }

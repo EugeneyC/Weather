@@ -8,7 +8,9 @@ import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherByCityBinding
 import com.skrebtsov.eugeney.weather.getListCity
 import com.skrebtsov.eugeney.weather.model.modelObject.WeatherModelResponce
 import com.skrebtsov.eugeney.weather.presenters.WeatherInCityActivityPresenter
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 
@@ -50,5 +52,9 @@ class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
         binding.tempInCity.text = "Temp: $tempInCity °C"
         binding.weatherDescriptionInCity.text = "Weather: $weatherInCity"
         binding.windInCity.text = "Wind: $wind m/s"
+    }
+
+    override fun showError() {
+        binding.tempInCity.text = "Error connecting server"
     }
 }

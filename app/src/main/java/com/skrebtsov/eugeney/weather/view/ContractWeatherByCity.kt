@@ -10,4 +10,5 @@ import moxy.viewstate.strategy.alias.AddToEndSingle
 interface ContractWeatherByCity:MvpView {
     @AddToEndSingle
     fun showWeather(weather: WeatherModelResponce)
+    fun showError()
 }
