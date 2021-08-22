@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="WeatherInMinsk">Weather in Minsk</string>
+    <string name="WeatherByCity">Weather by city</string>
+</resources>
