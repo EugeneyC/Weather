@@ -29,4 +29,5 @@ class Coord {
     fun setLat(lat: Double?) {
         this.lat = lat
     }
+
 }

@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 
 class Sys {
+
     @SerializedName("type")
     @Expose
     private var type: Int? = null

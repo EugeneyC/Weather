@@ -29,5 +29,4 @@ class Wind {
     fun setDeg(deg: Int?) {
         this.deg = deg
     }
-
 }

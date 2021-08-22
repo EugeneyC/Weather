@@ -1,7 +1,6 @@
 package com.skrebtsov.eugeney.weather.model.modelObject
 
 import com.google.gson.annotations.Expose
-
 import com.google.gson.annotations.SerializedName
 
 
@@ -161,5 +160,4 @@ class WeatherModelResponce {
     fun setCod(cod: Int?) {
         this.cod = cod
     }
-
 }

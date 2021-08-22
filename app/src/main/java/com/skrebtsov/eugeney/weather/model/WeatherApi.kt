@@ -14,7 +14,8 @@ interface WeatherApi {
     fun getWeatherInCity(
         @Query("q") cityName: String,
         @Query("appid") apiKey: String = Constans.API_KEY,
-        @Query("units") units: String = "metric"
+        @Query("units") units: String = "metric",
+        @Query("lang") lang: String = "ru"
     ): Observable<WeatherModelResponce>
 
     companion object {

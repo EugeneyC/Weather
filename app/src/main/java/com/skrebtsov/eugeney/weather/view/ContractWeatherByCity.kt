@@ -7,7 +7,7 @@ import moxy.viewstate.strategy.StateStrategyType
 import moxy.viewstate.strategy.alias.AddToEndSingle
 
 @StateStrategyType(value = OneExecutionStateStrategy::class)
-interface ContractWeatherInMinsk:MvpView {
+interface ContractWeatherByCity:MvpView {
     @AddToEndSingle
     fun showWeather(weather: WeatherModelResponce)
 }

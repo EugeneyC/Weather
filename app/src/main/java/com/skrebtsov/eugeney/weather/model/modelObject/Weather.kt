@@ -53,4 +53,5 @@ class Weather {
     fun setIcon(icon: String?) {
         this.icon = icon
     }
+
 }

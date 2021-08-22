@@ -17,4 +17,5 @@ class Clouds {
     fun setAll(all: Int?) {
         this.all = all
     }
+
 }
