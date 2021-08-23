@@ -11,6 +11,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val disposableBag = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,15 +19,22 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        RxView.clicks(binding.btnWeatherInMinsk)
+        val disposableStartWeatherInMinsk = RxView.clicks(binding.btnWeatherInMinsk)
             .subscribe{
                 startActivityWeatherInMinsk()
             }
+        disposableBag.add(disposableStartWeatherInMinsk)
 
-        RxView.clicks(binding.btnWeatherByCity)
+        val disposableStartWeatherByCity = RxView.clicks(binding.btnWeatherByCity)
             .subscribe{
                 startActivityWeatherByCity()
             }
+        disposableBag.add(disposableStartWeatherByCity)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposableBag.clear()
     }
 
     private fun startActivityWeatherByCity() {

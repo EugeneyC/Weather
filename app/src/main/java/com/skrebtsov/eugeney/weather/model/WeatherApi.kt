@@ -1,7 +1,7 @@
 package com.skrebtsov.eugeney.weather.model
 
 import com.skrebtsov.eugeney.weather.Constans
-import com.skrebtsov.eugeney.weather.model.modelObject.WeatherModelResponce
+import com.skrebtsov.eugeney.weather.model.modelObject.WeatherModelResponse
 import io.reactivex.Observable
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -14,9 +14,8 @@ interface WeatherApi {
     fun getWeatherInCity(
         @Query("q") cityName: String,
         @Query("appid") apiKey: String = Constans.API_KEY,
-        @Query("units") units: String = "metric",
-        @Query("lang") lang: String = "ru"
-    ): Observable<WeatherModelResponce>
+        @Query("units") units: String = "metric"
+    ): Observable<WeatherModelResponse>
 
     companion object {
         var BASE_URL = "https://api.openweathermap.org/data/2.5/"

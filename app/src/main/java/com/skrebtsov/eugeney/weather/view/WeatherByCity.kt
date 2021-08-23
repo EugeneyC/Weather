@@ -6,17 +6,17 @@ import android.widget.ArrayAdapter
 import com.jakewharton.rxbinding2.widget.RxAdapterView
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherByCityBinding
 import com.skrebtsov.eugeney.weather.getListCity
-import com.skrebtsov.eugeney.weather.model.modelObject.WeatherModelResponce
+import com.skrebtsov.eugeney.weather.model.modelObject.DataWeatherCity
 import com.skrebtsov.eugeney.weather.presenters.WeatherInCityActivityPresenter
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 
 class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
 
     private lateinit var binding: ActivityWeatherByCityBinding
+    private val disposableBag = CompositeDisposable()
 
     private val presenter by moxyPresenter { WeatherInCityActivityPresenter() }
 
@@ -28,13 +28,17 @@ class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
 
         initAdapter()
 
-        RxAdapterView.itemSelections(binding.spinnerCity)
+        val disposable = RxAdapterView.itemSelections(binding.spinnerCity)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                binding.nameCity.text = getListCity().get(it)
                 presenter.getWeatherByCity(getListCity().get(it))
             }
+        disposableBag.add(disposable)
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        disposableBag.clear()
     }
 
     private fun initAdapter() {
@@ -44,14 +48,11 @@ class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
         binding.spinnerCity.adapter = arrayAdapter
     }
 
-    override fun showWeather(weather: WeatherModelResponce) {
-        val tempInCity = weather.getMain()?.getTemp().toString()
-        val weatherInCity = weather.getWeather()?.get(0)?.getDescription().toString()
-        val wind = weather.getWind()?.getSpeed().toString()
-
-        binding.tempInCity.text = "Temp: $tempInCity °C"
-        binding.weatherDescriptionInCity.text = "Weather: $weatherInCity"
-        binding.windInCity.text = "Wind: $wind m/s"
+    override fun showWeather(weather: DataWeatherCity) {
+        binding.nameCity.text = weather.nameCity
+        binding.tempInCity.text = "Temp: ${weather.tempInCity} °C"
+        binding.weatherDescriptionInCity.text = "Weather: ${weather.weatherInCity}"
+        binding.windInCity.text = "Wind: ${weather.wind} m/s"
     }
 
     override fun showError() {
