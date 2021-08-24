@@ -1,9 +1,9 @@
 package com.skrebtsov.eugeney.weather.view
 
-import android.R
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import com.jakewharton.rxbinding2.widget.RxAdapterView
+import com.skrebtsov.eugeney.weather.R
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherByCityBinding
 import com.skrebtsov.eugeney.weather.getListCity
 import com.skrebtsov.eugeney.weather.model.modelObject.DataWeatherCity
@@ -43,21 +43,22 @@ class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
 
     private fun initAdapter() {
         val arrayAdapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, R.layout.simple_spinner_item, getListCity())
-        arrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            ArrayAdapter<String>(this, R.layout.spinner_style, getListCity())
         binding.spinnerCity.adapter = arrayAdapter
     }
 
     override fun showWeather(weather: DataWeatherCity) {
-        binding.nameCity.text = weather.nameCity
-        binding.tempInCity.text = "Temp: ${weather.tempInCity} °C"
-        binding.weatherDescriptionInCity.text = "Weather: ${weather.weatherInCity}"
-        binding.windInCity.text = "Wind: ${weather.wind} m/s"
+        binding.tempInCity.text = "${weather.tempInCity} °C"
+        val resIconWeather = resources.getIdentifier(("_" + weather.icon), "drawable", packageName)
+        binding.weatherDescriptionInCity.setImageResource(resIconWeather)
+        binding.windInCity.text = "${weather.wind} m/s"
+        val reIconWind = resources.getIdentifier("wind_white", "drawable", packageName)
+        binding.imageWind.setImageResource(reIconWind)
     }
 
     override fun showError() {
-        binding.tempInCity.text = "Error connecting server"
-        binding.weatherDescriptionInCity.text = ""
+        binding.nameCity.text = "Error connecting server"
+        binding.tempInCity.text = ""
         binding.windInCity.text = ""
     }
 }

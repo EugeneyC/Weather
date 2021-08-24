@@ -25,14 +25,16 @@ class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
     }
 
     override fun showWeather(weather: DataWeatherCity) {
-        binding.tempInMinsk.text = "Temp: ${weather.tempInCity} °C"
-        binding.weatherDescriptionInMinsk.text = "Weather: ${weather.weatherInCity}"
-        binding.windInMinsk.text = "Wind: ${weather.wind} m/s"
+        binding.tempInMinsk.text = "${weather.tempInCity} °C"
+        val resIconWeather = resources.getIdentifier(("_" + weather.icon), "drawable", packageName)
+        binding.weatherDescriptionInMinsk.setImageResource(resIconWeather)
+        binding.windInMinsk.text = "${weather.wind} m/s"
+        val reIconWind = resources.getIdentifier("wind_white", "drawable", packageName)
+        binding.imageWind.setImageResource(reIconWind)
     }
 
     override fun showError() {
         binding.tempInMinsk.text = "Error connecting server"
-        binding.weatherDescriptionInMinsk.text = ""
         binding.windInMinsk.text = ""
     }
 }

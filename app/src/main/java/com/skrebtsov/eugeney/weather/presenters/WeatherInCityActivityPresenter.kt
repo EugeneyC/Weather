@@ -39,7 +39,8 @@ class WeatherInCityActivityPresenter : MvpPresenter<ContractWeatherByCity>() {
             nameCity = weatherModelResponse.name.toString(),
             tempInCity = weatherModelResponse.main?.temp.toString(),
             weatherInCity = weatherModelResponse.weather?.get(0)?.description.toString(),
-            wind = weatherModelResponse.wind?.speed.toString()
+            wind = weatherModelResponse.wind?.speed.toString(),
+            icon = weatherModelResponse.weather?.get(0)?.icon.toString()
         )
     }
 }
