@@ -52,8 +52,7 @@ class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
         val resIconWeather = resources.getIdentifier(("_" + weather.icon), "drawable", packageName)
         binding.weatherDescriptionInCity.setImageResource(resIconWeather)
         binding.windInCity.text = "${weather.wind} m/s"
-        val reIconWind = resources.getIdentifier("wind_white", "drawable", packageName)
-        binding.imageWind.setImageResource(reIconWind)
+        binding.imageWind.setImageResource(R.drawable.wind_white)
     }
 
     override fun showError() {

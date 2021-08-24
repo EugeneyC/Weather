@@ -1,6 +1,7 @@
 package com.skrebtsov.eugeney.weather.view
 
 import android.os.Bundle
+import com.skrebtsov.eugeney.weather.R
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherInMinskBinding
 import com.skrebtsov.eugeney.weather.model.modelObject.DataWeatherCity
 import com.skrebtsov.eugeney.weather.presenters.WeatherInCityActivityPresenter
@@ -29,8 +30,7 @@ class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
         val resIconWeather = resources.getIdentifier(("_" + weather.icon), "drawable", packageName)
         binding.weatherDescriptionInMinsk.setImageResource(resIconWeather)
         binding.windInMinsk.text = "${weather.wind} m/s"
-        val reIconWind = resources.getIdentifier("wind_white", "drawable", packageName)
-        binding.imageWind.setImageResource(reIconWind)
+        binding.imageWind.setImageResource(R.drawable.wind_white)
     }
 
     override fun showError() {
