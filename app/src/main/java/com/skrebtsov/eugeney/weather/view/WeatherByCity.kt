@@ -6,7 +6,7 @@ import com.jakewharton.rxbinding2.widget.RxAdapterView
 import com.skrebtsov.eugeney.weather.R
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherByCityBinding
 import com.skrebtsov.eugeney.weather.getListCity
-import com.skrebtsov.eugeney.weather.model.modelObject.DataWeatherCity
+import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
 import com.skrebtsov.eugeney.weather.presenters.WeatherInCityActivityPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -31,7 +31,7 @@ class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
         val disposable = RxAdapterView.itemSelections(binding.spinnerCity)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                presenter.getWeatherByCity(getListCity().get(it))
+                presenter.getWeatherByCity(getListCity()[it])
             }
         disposableBag.add(disposable)
     }

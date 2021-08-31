@@ -1,6 +1,6 @@
 package com.skrebtsov.eugeney.weather.view
 
-import com.skrebtsov.eugeney.weather.model.modelObject.DataWeatherCity
+import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
 import moxy.MvpView
 import moxy.viewstate.strategy.OneExecutionStateStrategy
 import moxy.viewstate.strategy.StateStrategyType

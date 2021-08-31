@@ -1,18 +1,21 @@
 package com.skrebtsov.eugeney.weather.view
 
 import android.os.Bundle
+import android.util.Log
+import com.jakewharton.rxbinding2.view.RxView
 import com.skrebtsov.eugeney.weather.R
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherInMinskBinding
-import com.skrebtsov.eugeney.weather.model.modelObject.DataWeatherCity
+import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
 import com.skrebtsov.eugeney.weather.presenters.WeatherInCityActivityPresenter
+import io.reactivex.disposables.CompositeDisposable
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 
 
 class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
 
-    private var CITY = "Minsk"
     private lateinit var binding: ActivityWeatherInMinskBinding
+    private val disposableBag = CompositeDisposable()
 
     private val presenter by moxyPresenter { WeatherInCityActivityPresenter() }
 
@@ -22,15 +25,26 @@ class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
         val view = binding.root
         setContentView(view)
 
-        presenter.getWeatherByCity(CITY)
+        disposableBag.add(RxView.clicks(binding.btnAutoUpdate)
+            .subscribe {
+                presenter.startAutoUpdate()
+            })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposableBag.dispose()
+        disposableBag.clear()
     }
 
     override fun showWeather(weather: DataWeatherCity) {
+        binding.textView.text = weather.nameCity
         binding.tempInMinsk.text = "${weather.tempInCity} °C"
         val resIconWeather = resources.getIdentifier(("_" + weather.icon), "drawable", packageName)
         binding.weatherDescriptionInMinsk.setImageResource(resIconWeather)
         binding.windInMinsk.text = "${weather.wind} m/s"
         binding.imageWind.setImageResource(R.drawable.wind_white)
+
     }
 
     override fun showError() {

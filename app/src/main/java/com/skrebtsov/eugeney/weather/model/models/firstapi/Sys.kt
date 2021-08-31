@@ -1,4 +1,4 @@
-package com.skrebtsov.eugeney.weather.model.modelObject
+package com.skrebtsov.eugeney.weather.model.models.firstapi
 
 
 data class Sys(
