@@ -1,6 +1,5 @@
 package com.skrebtsov.eugeney.weather.presenters
 
-import android.util.Log
 import com.skrebtsov.eugeney.weather.model.WeatherApiOne
 import com.skrebtsov.eugeney.weather.model.WeatherApiTwo
 import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
@@ -22,17 +21,15 @@ class WeatherInCityActivityPresenter : MvpPresenter<ContractWeatherByCity>() {
 
     fun startAutoUpdate(){
         disposableBag.add(Observable.merge(
-            getWeatherByCity(CITY),
-            getWeatherYandexByCity()
+            getWeatherByCityAutoUpdate(CITY),
+            getWeatherYandexByCityAutoUpdate()
         )
             .repeat()
-            .timeInterval(TimeUnit.SECONDS)
+            .timeInterval(TimeUnit.MINUTES)
             .flatMap {
                 if (it.time() <= 1) {
-                    Log.e("TAG", (it.time().toString() + " dalay"))
                     Observable.just(it.value()).delay(1, TimeUnit.MINUTES)
                 } else {
-                    Log.e("TAG", (it.time().toString() + " normal"))
                     Observable.just(it.value())
                 }
             }
@@ -47,16 +44,29 @@ class WeatherInCityActivityPresenter : MvpPresenter<ContractWeatherByCity>() {
 
     }
 
-    fun getWeatherByCity(city: String): Observable<DataWeatherCity>? {
+    private fun getWeatherByCityAutoUpdate(city: String): Observable<DataWeatherCity>? {
         return WeatherApiOne.create().getWeatherInCity(city)
             .delay(3, TimeUnit.MINUTES)
             .map { parseDateWeatherCity(it) }
     }
 
-    private fun getWeatherYandexByCity(): Observable<DataWeatherCity> {
+    private fun getWeatherYandexByCityAutoUpdate(): Observable<DataWeatherCity> {
         return WeatherApiTwo.create().weatherYandex()
             .delay(5, TimeUnit.MINUTES)
             .map { parseDateWeatherYandexCity(it) }
+    }
+
+    fun getWeatherByCity(city: String){
+        val result = WeatherApiOne.create().getWeatherInCity(city)
+            .map { parseDateWeatherCity(it) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                viewState.showWeather(it)
+            },{
+                viewState.showError()
+            })
+        disposableBag.add(result)
     }
 
     override fun onDestroy() {

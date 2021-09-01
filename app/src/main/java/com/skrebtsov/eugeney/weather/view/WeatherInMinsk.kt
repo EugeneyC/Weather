@@ -13,7 +13,7 @@ import moxy.ktx.moxyPresenter
 
 
 class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
-
+    private var CITY = "Minsk"
     private lateinit var binding: ActivityWeatherInMinskBinding
     private val disposableBag = CompositeDisposable()
 
@@ -24,6 +24,8 @@ class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
         binding = ActivityWeatherInMinskBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        presenter.getWeatherByCity(CITY)
 
         disposableBag.add(RxView.clicks(binding.btnAutoUpdate)
             .subscribe {
