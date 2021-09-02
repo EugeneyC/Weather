@@ -22,8 +22,6 @@ interface WeatherApiOne {
         var BASE_URL = "https://api.openweathermap.org/data/2.5/"
 
         fun create(): WeatherApiOne {
-
-
             val retrofit = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

@@ -9,8 +9,6 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
 
-//53.902284, 27.561831
-//GET https://api.weather.yandex.ru/v2/forecast?
 interface WeatherApiTwo {
 
 

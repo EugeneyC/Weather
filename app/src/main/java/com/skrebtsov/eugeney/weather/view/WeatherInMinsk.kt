@@ -1,7 +1,6 @@
 package com.skrebtsov.eugeney.weather.view
 
 import android.os.Bundle
-import android.util.Log
 import com.jakewharton.rxbinding2.view.RxView
 import com.skrebtsov.eugeney.weather.R
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherInMinskBinding
@@ -13,7 +12,7 @@ import moxy.ktx.moxyPresenter
 
 
 class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
-    private var CITY = "Minsk"
+    private var CITY_MINSK = "Minsk"
     private lateinit var binding: ActivityWeatherInMinskBinding
     private val disposableBag = CompositeDisposable()
 
@@ -25,11 +24,11 @@ class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
         val view = binding.root
         setContentView(view)
 
-        presenter.getWeatherByCity(CITY)
+        presenter.getWeatherByCity(CITY_MINSK)
 
         disposableBag.add(RxView.clicks(binding.btnAutoUpdate)
             .subscribe {
-                presenter.startAutoUpdate()
+                presenter.startAutoUpdate(CITY_MINSK)
             })
     }
 

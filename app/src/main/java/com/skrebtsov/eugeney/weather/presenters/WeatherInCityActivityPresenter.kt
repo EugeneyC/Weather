@@ -1,5 +1,6 @@
 package com.skrebtsov.eugeney.weather.presenters
 
+import com.skrebtsov.eugeney.weather.getListCoordCity
 import com.skrebtsov.eugeney.weather.model.WeatherApiOne
 import com.skrebtsov.eugeney.weather.model.WeatherApiTwo
 import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
@@ -16,13 +17,12 @@ import java.util.concurrent.TimeUnit
 
 @InjectViewState
 class WeatherInCityActivityPresenter : MvpPresenter<ContractWeatherByCity>() {
-    private var CITY = "Minsk"
     private val disposableBag = CompositeDisposable()
 
-    fun startAutoUpdate(){
+    fun startAutoUpdate(city: String) {
         disposableBag.add(Observable.merge(
-            getWeatherByCityAutoUpdate(CITY),
-            getWeatherYandexByCityAutoUpdate()
+            getWeatherByCityAutoUpdate(city),
+            getWeatherYandexByCityAutoUpdate(city)
         )
             .repeat()
             .timeInterval(TimeUnit.MINUTES)
@@ -40,8 +40,8 @@ class WeatherInCityActivityPresenter : MvpPresenter<ContractWeatherByCity>() {
             },
                 {
                     viewState.showError()
-                }))
-
+                })
+        )
     }
 
     private fun getWeatherByCityAutoUpdate(city: String): Observable<DataWeatherCity>? {
@@ -50,20 +50,22 @@ class WeatherInCityActivityPresenter : MvpPresenter<ContractWeatherByCity>() {
             .map { parseDateWeatherCity(it) }
     }
 
-    private fun getWeatherYandexByCityAutoUpdate(): Observable<DataWeatherCity> {
-        return WeatherApiTwo.create().weatherYandex()
+    private fun getWeatherYandexByCityAutoUpdate(city: String): Observable<DataWeatherCity> {
+        val coord = getListCoordCity(city)
+        return WeatherApiTwo.create()
+            .weatherYandex(lon = coord?.lon.toString(), lat = coord?.lat.toString())
             .delay(5, TimeUnit.MINUTES)
             .map { parseDateWeatherYandexCity(it) }
     }
 
-    fun getWeatherByCity(city: String){
+    fun getWeatherByCity(city: String) {
         val result = WeatherApiOne.create().getWeatherInCity(city)
             .map { parseDateWeatherCity(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 viewState.showWeather(it)
-            },{
+            }, {
                 viewState.showError()
             })
         disposableBag.add(result)

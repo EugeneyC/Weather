@@ -32,6 +32,7 @@ class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 presenter.getWeatherByCity(getListCity()[it])
+                presenter.startAutoUpdate(getListCity()[it])
             }
         disposableBag.add(disposable)
     }
