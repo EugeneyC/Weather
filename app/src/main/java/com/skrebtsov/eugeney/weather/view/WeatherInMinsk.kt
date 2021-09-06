@@ -12,7 +12,7 @@ import moxy.ktx.moxyPresenter
 
 
 class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
-    private var CITY_MINSK = "Minsk"
+    private val CITY_MINSK = "Minsk"
     private lateinit var binding: ActivityWeatherInMinskBinding
     private val disposableBag = CompositeDisposable()
 

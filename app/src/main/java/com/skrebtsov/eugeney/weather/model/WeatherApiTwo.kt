@@ -24,7 +24,7 @@ interface WeatherApiTwo {
     ): Observable<WeatherYandexResponse>
 
     companion object {
-        var BASE_URL = "https://api.weather.yandex.ru/v2/"
+        private const val BASE_URL = "https://api.weather.yandex.ru/v2/"
 
         fun create(): WeatherApiTwo {
             val retrofit = Retrofit.Builder()

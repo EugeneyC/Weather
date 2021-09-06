@@ -1,6 +1,6 @@
 package com.skrebtsov.eugeney.weather.presenters
 
-import com.skrebtsov.eugeney.weather.getListCoordCity
+import com.skrebtsov.eugeney.weather.getCoordCity
 import com.skrebtsov.eugeney.weather.model.WeatherApiOne
 import com.skrebtsov.eugeney.weather.model.WeatherApiTwo
 import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
@@ -51,7 +51,7 @@ class WeatherInCityActivityPresenter : MvpPresenter<ContractWeatherByCity>() {
     }
 
     private fun getWeatherYandexByCityAutoUpdate(city: String): Observable<DataWeatherCity> {
-        val coord = getListCoordCity(city)
+        val coord = getCoordCity(city)
         return WeatherApiTwo.create()
             .weatherYandex(lon = coord?.lon.toString(), lat = coord?.lat.toString())
             .delay(5, TimeUnit.MINUTES)
@@ -77,13 +77,13 @@ class WeatherInCityActivityPresenter : MvpPresenter<ContractWeatherByCity>() {
         disposableBag.clear()
     }
 
-    private fun parseDateWeatherCity(weatherOpenWeathermapResponse: WeatherOpenWeathermapResponse): DataWeatherCity {
+    private fun parseDateWeatherCity(weatherOpenWeatherMapResponse: WeatherOpenWeathermapResponse): DataWeatherCity {
         return DataWeatherCity(
-            nameCity = weatherOpenWeathermapResponse.name.toString(),
-            tempInCity = weatherOpenWeathermapResponse.main?.temp.toString(),
-            weatherInCity = weatherOpenWeathermapResponse.weather?.get(0)?.description.toString(),
-            wind = weatherOpenWeathermapResponse.wind?.speed.toString(),
-            icon = weatherOpenWeathermapResponse.weather?.get(0)?.icon.toString()
+            nameCity = weatherOpenWeatherMapResponse.name.toString(),
+            tempInCity = weatherOpenWeatherMapResponse.main?.temp.toString(),
+            weatherInCity = weatherOpenWeatherMapResponse.weather?.get(0)?.description.toString(),
+            wind = weatherOpenWeatherMapResponse.wind?.speed.toString(),
+            icon = weatherOpenWeatherMapResponse.weather?.get(0)?.icon.toString()
         )
     }
 
