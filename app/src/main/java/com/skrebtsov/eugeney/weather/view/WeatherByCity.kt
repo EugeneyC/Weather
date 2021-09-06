@@ -2,6 +2,7 @@ package com.skrebtsov.eugeney.weather.view
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import androidx.databinding.DataBindingUtil
 import com.jakewharton.rxbinding2.widget.RxAdapterView
 import com.skrebtsov.eugeney.weather.R
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherByCityBinding
@@ -22,9 +23,7 @@ class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityWeatherByCityBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_weather_by_city)
 
         initAdapter()
 
@@ -49,11 +48,7 @@ class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
     }
 
     override fun showWeather(weather: DataWeatherCity) {
-        binding.tempInCity.text = "${weather.tempInCity} °C"
-        val resIconWeather = resources.getIdentifier(("_" + weather.icon), "drawable", packageName)
-        binding.weatherDescriptionInCity.setImageResource(resIconWeather)
-        binding.windInCity.text = "${weather.wind} m/s"
-        binding.imageWind.setImageResource(R.drawable.wind_white)
+        binding.dataWeatherCity = weather
     }
 
     override fun showError() {

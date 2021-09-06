@@ -1,6 +1,7 @@
 package com.skrebtsov.eugeney.weather.view
 
 import android.os.Bundle
+import android.widget.ImageView
 import com.jakewharton.rxbinding2.view.RxView
 import com.skrebtsov.eugeney.weather.R
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherInMinskBinding
@@ -9,6 +10,8 @@ import com.skrebtsov.eugeney.weather.presenters.WeatherInCityActivityPresenter
 import io.reactivex.disposables.CompositeDisposable
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
+import androidx.databinding.BindingAdapter
+import androidx.databinding.DataBindingUtil
 
 
 class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
@@ -20,9 +23,8 @@ class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityWeatherInMinskBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_weather_in_minsk)
 
         presenter.getWeatherByCity(CITY_MINSK)
 
@@ -39,17 +41,16 @@ class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
     }
 
     override fun showWeather(weather: DataWeatherCity) {
-        binding.textView.text = weather.nameCity
-        binding.tempInMinsk.text = "${weather.tempInCity} °C"
-        val resIconWeather = resources.getIdentifier(("_" + weather.icon), "drawable", packageName)
-        binding.weatherDescriptionInMinsk.setImageResource(resIconWeather)
-        binding.windInMinsk.text = "${weather.wind} m/s"
-        binding.imageWind.setImageResource(R.drawable.wind_white)
-
+        binding.dataWeatherCity = weather
     }
 
     override fun showError() {
         binding.tempInMinsk.text = "Error connecting server"
         binding.windInMinsk.text = ""
+    }
+
+    @BindingAdapter("android:imgWeather")
+    fun setImageViewResource(imageView: ImageView, resource: Int) {
+        imageView.setImageResource(resource)
     }
 }
