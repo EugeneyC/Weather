@@ -1,36 +1,37 @@
 package com.skrebtsov.eugeney.weather.view
 
 import android.os.Bundle
-import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.library.baseAdapters.BR
 import com.jakewharton.rxbinding2.view.RxView
 import com.skrebtsov.eugeney.weather.R
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherInMinskBinding
-import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
-import com.skrebtsov.eugeney.weather.presenters.WeatherInCityActivityPresenter
+import com.skrebtsov.eugeney.weather.di.App
+import com.skrebtsov.eugeney.weather.viewmodel.WeatherByMinskViewModel
 import io.reactivex.disposables.CompositeDisposable
-import moxy.MvpAppCompatActivity
-import moxy.ktx.moxyPresenter
-import androidx.databinding.BindingAdapter
-import androidx.databinding.DataBindingUtil
+import javax.inject.Inject
 
 
-class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
+class WeatherInMinsk : AppCompatActivity() {
     private val CITY_MINSK = "Minsk"
     private lateinit var binding: ActivityWeatherInMinskBinding
     private val disposableBag = CompositeDisposable()
 
-    private val presenter by moxyPresenter { WeatherInCityActivityPresenter() }
+    @Inject
+    lateinit var viewModel: WeatherByMinskViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (applicationContext as App).appComponent.inject(this)
         super.onCreate(savedInstanceState)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_weather_in_minsk)
-
-        presenter.getWeatherByCity(CITY_MINSK)
+        binding.lifecycleOwner = this
+        binding.setVariable(BR.viewmodel, viewModel)
+        viewModel.getWeather(CITY_MINSK)
 
         disposableBag.add(RxView.clicks(binding.btnAutoUpdate)
             .subscribe {
-                presenter.startAutoUpdate(CITY_MINSK)
+                viewModel.getWeatherAutoUpdate(CITY_MINSK)
             })
     }
 
@@ -40,17 +41,4 @@ class WeatherInMinsk : MvpAppCompatActivity(), ContractWeatherByCity {
         disposableBag.clear()
     }
 
-    override fun showWeather(weather: DataWeatherCity) {
-        binding.dataWeatherCity = weather
-    }
-
-    override fun showError() {
-        binding.tempInMinsk.text = "Error connecting server"
-        binding.windInMinsk.text = ""
-    }
-
-    @BindingAdapter("android:imgWeather")
-    fun setImageViewResource(imageView: ImageView, resource: Int) {
-        imageView.setImageResource(resource)
-    }
 }

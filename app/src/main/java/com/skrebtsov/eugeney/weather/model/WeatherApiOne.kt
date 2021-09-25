@@ -16,18 +16,4 @@ interface WeatherApiOne {
         @Query("appid") apiKey: String = Constans.API_KEY,
         @Query("units") units: String = "metric"
     ): Observable<WeatherOpenWeathermapResponse>
-
-    companion object {
-
-        private const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
-
-        fun create(): WeatherApiOne {
-            val retrofit = Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(BASE_URL)
-                .build()
-            return retrofit.create(WeatherApiOne::class.java)
-        }
-    }
 }

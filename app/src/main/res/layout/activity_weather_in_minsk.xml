@@ -5,11 +5,10 @@
 
     <data>
         <variable
-            name="DataWeatherCity"
-            type="com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity" />
+            name="viewmodel"
+            type="com.skrebtsov.eugeney.weather.viewmodel.WeatherByMinskViewModel" />
 
     </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@{DataWeatherCity.nameCity}"
+            android:text="@{viewmodel.dataWeatherCity.nameCity}"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -45,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:textColor="@color/white"
-                android:text="@{DataWeatherCity.tempInCity}"
+                android:text="@{viewmodel.dataWeatherCity.tempInCity}"
                 android:textSize="40sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/weather_description_in_minsk"
@@ -83,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{DataWeatherCity.wind}"
+                android:text="@{viewmodel.dataWeatherCity.wind}"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/image_wind"

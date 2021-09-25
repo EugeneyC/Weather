@@ -2,36 +2,40 @@ package com.skrebtsov.eugeney.weather.view
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.library.baseAdapters.BR
 import com.jakewharton.rxbinding2.widget.RxAdapterView
 import com.skrebtsov.eugeney.weather.R
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherByCityBinding
+import com.skrebtsov.eugeney.weather.di.App
 import com.skrebtsov.eugeney.weather.getListCity
-import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
-import com.skrebtsov.eugeney.weather.presenters.WeatherInCityActivityPresenter
+import com.skrebtsov.eugeney.weather.viewmodel.WeatherByCityViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import moxy.MvpAppCompatActivity
-import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
-class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
+class WeatherByCity : AppCompatActivity() {
+    lateinit var binding: ActivityWeatherByCityBinding
 
-    private lateinit var binding: ActivityWeatherByCityBinding
+    @Inject lateinit var viewModel: WeatherByCityViewModel
+
     private val disposableBag = CompositeDisposable()
 
-    private val presenter by moxyPresenter { WeatherInCityActivityPresenter() }
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        (applicationContext as App).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_weather_by_city)
+        binding.lifecycleOwner = this
+        binding.setVariable(BR.viewmodel, viewModel)
 
         initAdapter()
 
         val disposable = RxAdapterView.itemSelections(binding.spinnerCity)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                presenter.getWeatherByCity(getListCity()[it])
-                presenter.startAutoUpdate(getListCity()[it])
+                viewModel.getWeather(getListCity()[it])
+                viewModel.getWeatherAutoUpdate(getListCity()[it])
             }
         disposableBag.add(disposable)
     }
@@ -44,14 +48,6 @@ class WeatherByCity : MvpAppCompatActivity(), ContractWeatherByCity {
     private fun initAdapter() {
         val arrayAdapter: ArrayAdapter<String> =
             ArrayAdapter<String>(this, R.layout.spinner_style, getListCity())
-        binding.spinnerCity.adapter = arrayAdapter
-    }
-
-    override fun showWeather(weather: DataWeatherCity) {
-        binding.dataWeatherCity = weather
-    }
-
-    override fun showError() {
-        binding.nameCity.text = "Error connecting server"
+            binding.spinnerCity.adapter = arrayAdapter
     }
 }
