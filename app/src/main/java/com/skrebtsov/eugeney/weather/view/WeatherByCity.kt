@@ -9,7 +9,8 @@ import com.jakewharton.rxbinding2.widget.RxAdapterView
 import com.skrebtsov.eugeney.weather.R
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherByCityBinding
 import com.skrebtsov.eugeney.weather.di.App
-import com.skrebtsov.eugeney.weather.getListCity
+import com.skrebtsov.eugeney.weather.model.data.DataCity
+import com.skrebtsov.eugeney.weather.model.data.DataCity_GetListCityFactory.getListCity
 import com.skrebtsov.eugeney.weather.view.viewmodel.WeatherByCityViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -34,8 +35,8 @@ class WeatherByCity : AppCompatActivity() {
         val disposable = RxAdapterView.itemSelections(binding.spinnerCity)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                viewModel.getWeather(getListCity()[it])
-                viewModel.getWeatherAutoUpdate(getListCity()[it])
+                viewModel.getWeather(getListCity(DataCity())[it])
+                viewModel.getWeatherAutoUpdate(getListCity(DataCity())[it])
             }
         disposableBag.add(disposable)
     }
@@ -47,7 +48,7 @@ class WeatherByCity : AppCompatActivity() {
 
     private fun initAdapter() {
         val arrayAdapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, R.layout.spinner_style, getListCity())
+            ArrayAdapter<String>(this, R.layout.spinner_style, getListCity(DataCity()))
             binding.spinnerCity.adapter = arrayAdapter
     }
 }
