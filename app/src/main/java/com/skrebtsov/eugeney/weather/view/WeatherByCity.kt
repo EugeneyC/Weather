@@ -10,7 +10,7 @@ import com.skrebtsov.eugeney.weather.R
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherByCityBinding
 import com.skrebtsov.eugeney.weather.di.App
 import com.skrebtsov.eugeney.weather.getListCity
-import com.skrebtsov.eugeney.weather.viewmodel.WeatherByCityViewModel
+import com.skrebtsov.eugeney.weather.view.viewmodel.WeatherByCityViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject

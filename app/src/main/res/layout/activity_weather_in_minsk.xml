@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.skrebtsov.eugeney.weather.viewmodel.WeatherByMinskViewModel" />
+            type="com.skrebtsov.eugeney.weather.view.viewmodel.WeatherByMinskViewModel" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout

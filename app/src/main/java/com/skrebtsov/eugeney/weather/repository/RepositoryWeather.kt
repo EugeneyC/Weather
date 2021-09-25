@@ -3,13 +3,10 @@ package com.skrebtsov.eugeney.weather.repository
 import com.skrebtsov.eugeney.weather.getCoordCity
 import com.skrebtsov.eugeney.weather.model.UseOneDataSource
 import com.skrebtsov.eugeney.weather.model.UseTwoDataSource
-import com.skrebtsov.eugeney.weather.model.WeatherApiOne
-import com.skrebtsov.eugeney.weather.model.WeatherApiTwo
 import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
 import com.skrebtsov.eugeney.weather.model.models.firstapi.WeatherOpenWeathermapResponse
 import com.skrebtsov.eugeney.weather.model.models.secondapi.WeatherYandexResponse
-import com.skrebtsov.eugeney.weather.viewmodel.IViewModel
-import com.skrebtsov.eugeney.weather.viewmodel.WeatherByCityViewModel
+import com.skrebtsov.eugeney.weather.view.viewmodel.IViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

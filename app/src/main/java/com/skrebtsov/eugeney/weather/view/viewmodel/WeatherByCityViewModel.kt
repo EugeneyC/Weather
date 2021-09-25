@@ -1,4 +1,4 @@
-package com.skrebtsov.eugeney.weather.viewmodel
+package com.skrebtsov.eugeney.weather.view.viewmodel
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

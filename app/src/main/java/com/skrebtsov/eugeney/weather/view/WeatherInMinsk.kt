@@ -8,7 +8,7 @@ import com.jakewharton.rxbinding2.view.RxView
 import com.skrebtsov.eugeney.weather.R
 import com.skrebtsov.eugeney.weather.databinding.ActivityWeatherInMinskBinding
 import com.skrebtsov.eugeney.weather.di.App
-import com.skrebtsov.eugeney.weather.viewmodel.WeatherByMinskViewModel
+import com.skrebtsov.eugeney.weather.view.viewmodel.WeatherByMinskViewModel
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -27,6 +27,7 @@ class WeatherInMinsk : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_weather_in_minsk)
         binding.lifecycleOwner = this
         binding.setVariable(BR.viewmodel, viewModel)
+
         viewModel.getWeather(CITY_MINSK)
 
         disposableBag.add(RxView.clicks(binding.btnAutoUpdate)

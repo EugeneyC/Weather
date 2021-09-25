@@ -1,4 +1,4 @@
-package com.skrebtsov.eugeney.weather.data
+package com.skrebtsov.eugeney.weather.model.data
 
 import com.skrebtsov.eugeney.weather.model.models.firstapi.Coord
 

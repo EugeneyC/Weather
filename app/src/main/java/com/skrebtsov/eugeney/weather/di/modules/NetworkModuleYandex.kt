@@ -1,6 +1,6 @@
-package com.skrebtsov.eugeney.weather.model.modules
+package com.skrebtsov.eugeney.weather.di.modules
 
-import com.skrebtsov.eugeney.weather.model.WeatherApiOne
+import com.skrebtsov.eugeney.weather.model.WeatherApiTwo
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -8,14 +8,14 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-class NetworkModuleOpenweathermap {
+class NetworkModuleYandex {
     @Provides
-    fun create(): WeatherApiOne {
+    fun create(): WeatherApiTwo {
         val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .baseUrl("https://api.openweathermap.org/data/2.5/")
+            .baseUrl("https://api.weather.yandex.ru/v2/")
             .build()
-        return retrofit.create(WeatherApiOne::class.java)
+        return retrofit.create(WeatherApiTwo::class.java)
     }
 }

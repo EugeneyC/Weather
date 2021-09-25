@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.skrebtsov.eugeney.weather.viewmodel.WeatherByCityViewModel" />
+            type="com.skrebtsov.eugeney.weather.view.viewmodel.WeatherByCityViewModel" />
 
     </data>
 

@@ -1,6 +1,6 @@
 package com.skrebtsov.eugeney.weather
 
-import com.skrebtsov.eugeney.weather.data.City
+import com.skrebtsov.eugeney.weather.model.data.City
 import com.skrebtsov.eugeney.weather.model.models.firstapi.Coord
 
 val dataCity = listOf(

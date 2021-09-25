@@ -1,4 +1,4 @@
-package com.skrebtsov.eugeney.weather.viewmodel
+package com.skrebtsov.eugeney.weather.view.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
