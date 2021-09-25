@@ -1,11 +1,12 @@
 package com.skrebtsov.eugeney.weather.repository
 
 import com.skrebtsov.eugeney.weather.getCoordCity
+import com.skrebtsov.eugeney.weather.model.ParseResponse
+import com.skrebtsov.eugeney.weather.model.ParseResponse_ParseDateWeatherCityFactory.parseDateWeatherCity
+import com.skrebtsov.eugeney.weather.model.ParseResponse_ParseDateWeatherYandexCityFactory.parseDateWeatherYandexCity
 import com.skrebtsov.eugeney.weather.model.UseOneDataSource
 import com.skrebtsov.eugeney.weather.model.UseTwoDataSource
 import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
-import com.skrebtsov.eugeney.weather.model.models.firstapi.WeatherOpenWeathermapResponse
-import com.skrebtsov.eugeney.weather.model.models.secondapi.WeatherYandexResponse
 import com.skrebtsov.eugeney.weather.view.viewmodel.IViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 class RepositoryWeather @Inject constructor(
     private val useOneDataSource: UseOneDataSource,
-    private val useTwoDataSource: UseTwoDataSource,
+    private val useTwoDataSource: UseTwoDataSource
 ) {
 
     fun startAutoUpdate(viewModel: IViewModel, city: String) {
@@ -42,24 +43,10 @@ class RepositoryWeather @Inject constructor(
                 })
     }
 
-    private fun getWeatherYandexByCityAutoUpdate(city: String): Observable<DataWeatherCity> {
-        val coord = getCoordCity(city)
-        return useTwoDataSource.getWeatherApiYandex()
-            .weatherYandex(lon = coord?.lon.toString(), lat = coord?.lat.toString())
-            .delay(5, TimeUnit.MINUTES)
-            .map { parseDateWeatherYandexCity(it) }
-    }
-
-    private fun getWeatherByCityAutoUpdate(city: String): Observable<DataWeatherCity> {
-        return useOneDataSource.getWeatherApiOpenweathermap().getWeatherInCity(cityName = city)
-            .delay(3, TimeUnit.MINUTES)
-            .map { parseDateWeatherCity(it) }
-    }
-
     fun getWeatherByCity(viewModel: IViewModel, city: String) {
         val result =
             useOneDataSource.getWeatherApiOpenweathermap().getWeatherInCity(cityName = city)
-                .map { parseDateWeatherCity(it) }
+                .map { parseDateWeatherCity(ParseResponse(), it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -69,22 +56,17 @@ class RepositoryWeather @Inject constructor(
                 })
     }
 
-    private fun parseDateWeatherYandexCity(weatherYandexResponse: WeatherYandexResponse): DataWeatherCity {
-        return DataWeatherCity(
-            tempInCity = weatherYandexResponse.fact.temp.toString(),
-            weatherInCity = weatherYandexResponse.fact.condition,
-            wind = weatherYandexResponse.fact.windSpeed.toString(),
-            icon = weatherYandexResponse.fact.icon
-        )
+    private fun getWeatherYandexByCityAutoUpdate(city: String): Observable<DataWeatherCity> {
+        val coord = getCoordCity(city)
+        return useTwoDataSource.getWeatherApiYandex()
+            .weatherYandex(lon = coord?.lon.toString(), lat = coord?.lat.toString())
+            .delay(5, TimeUnit.MINUTES)
+            .map { parseDateWeatherYandexCity(ParseResponse(), it) }
     }
 
-    private fun parseDateWeatherCity(weatherOpenWeatherMapResponse: WeatherOpenWeathermapResponse): DataWeatherCity {
-        return DataWeatherCity(
-            nameCity = weatherOpenWeatherMapResponse.name.toString(),
-            tempInCity = weatherOpenWeatherMapResponse.main?.temp.toString(),
-            weatherInCity = weatherOpenWeatherMapResponse.weather?.get(0)?.description.toString(),
-            wind = weatherOpenWeatherMapResponse.wind?.speed.toString(),
-            icon = weatherOpenWeatherMapResponse.weather?.get(0)?.icon.toString()
-        )
+    private fun getWeatherByCityAutoUpdate(city: String): Observable<DataWeatherCity> {
+        return useOneDataSource.getWeatherApiOpenweathermap().getWeatherInCity(cityName = city)
+            .delay(3, TimeUnit.MINUTES)
+            .map { parseDateWeatherCity(ParseResponse(), it) }
     }
 }
