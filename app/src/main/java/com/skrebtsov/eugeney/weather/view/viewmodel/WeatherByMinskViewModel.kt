@@ -2,11 +2,17 @@ package com.skrebtsov.eugeney.weather.view.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.skrebtsov.eugeney.weather.domain.UseCaseWeatherAutoUpdate
+import com.skrebtsov.eugeney.weather.domain.UseOneDataSource
+import com.skrebtsov.eugeney.weather.domain.UseTwoDataSource
 import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
-import com.skrebtsov.eugeney.weather.repository.RepositoryWeather
 import javax.inject.Inject
 
-class WeatherByMinskViewModel @Inject constructor(private val repositoryWeather: RepositoryWeather): ViewModel(), IViewModel {
+class WeatherByMinskViewModel @Inject constructor(
+    private val useOneDataSource: UseOneDataSource,
+    private val useTwoDataSource: UseTwoDataSource,
+    private val useCaseWeatherAutoUpdate: UseCaseWeatherAutoUpdate
+) : ViewModel(), IViewModel {
 
     var dataWeatherCity = MutableLiveData<DataWeatherCity>()
 
@@ -18,9 +24,10 @@ class WeatherByMinskViewModel @Inject constructor(private val repositoryWeather:
     }
 
     fun getWeather(cityMinsk: String) {
-        repositoryWeather.getWeatherByCity(this, cityMinsk)
+        useOneDataSource.getWeatherByCity(this, cityMinsk)
     }
-    fun getWeatherAutoUpdate(cityMinsk: String){
-        repositoryWeather.startAutoUpdate(this, cityMinsk)
+
+    fun getWeatherAutoUpdate(cityMinsk: String) {
+        useCaseWeatherAutoUpdate.startAutoUpdate(this, cityMinsk)
     }
 }

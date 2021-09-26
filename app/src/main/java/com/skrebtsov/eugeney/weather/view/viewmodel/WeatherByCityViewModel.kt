@@ -4,31 +4,38 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.skrebtsov.eugeney.weather.domain.UseCaseWeatherAutoUpdate
+import com.skrebtsov.eugeney.weather.domain.UseOneDataSource
+import com.skrebtsov.eugeney.weather.domain.UseTwoDataSource
 import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
-import com.skrebtsov.eugeney.weather.repository.RepositoryWeather
 import javax.inject.Inject
 
-class WeatherByCityViewModel @Inject constructor(private val repositoryWeather: RepositoryWeather) :
+class WeatherByCityViewModel @Inject constructor(
+    private val useOneDataSource: UseOneDataSource,
+    private val useTwoDataSource: UseTwoDataSource,
+    private val useCaseWeatherAutoUpdate: UseCaseWeatherAutoUpdate
+) :
     ViewModel(), IViewModel {
 
     var dataWeatherCity = MutableLiveData<DataWeatherCity>()
 
     fun getWeather(city: String) {
-        repositoryWeather.getWeatherByCity(this, city)
+        useOneDataSource.getWeatherByCity(this, city)
     }
 
-    fun  getWeatherAutoUpdate(city: String){
-        repositoryWeather.startAutoUpdate(this, city)
+    fun getWeatherAutoUpdate(city: String) {
+        useCaseWeatherAutoUpdate.startAutoUpdate(this, city)
     }
+
     override fun showWeather(dataWeatherCity: DataWeatherCity) {
-       this.dataWeatherCity.value = dataWeatherCity
+        this.dataWeatherCity.value = dataWeatherCity
     }
 
     override fun showError() {
 //            dataWeatherCity.value?.nameCity = "Error connecting server"
     }
 
-        @BindingAdapter("android:imgWeather")
+    @BindingAdapter("android:imgWeather")
     fun setImageViewResource(imageView: ImageView, resource: Int) {
         imageView.setImageResource(resource)
     }

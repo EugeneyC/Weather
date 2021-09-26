@@ -1,6 +1,8 @@
-package com.skrebtsov.eugeney.weather.model
+package com.skrebtsov.eugeney.weather.repository
 
-import com.skrebtsov.eugeney.weather.model.ParseResponse_ParseDateWeatherYandexCityFactory.parseDateWeatherYandexCity
+import com.skrebtsov.eugeney.weather.di.modules.ParseResponse
+import com.skrebtsov.eugeney.weather.di.modules.ParseResponse_ParseDateWeatherYandexCityFactory.parseDateWeatherYandexCity
+import com.skrebtsov.eugeney.weather.model.WeatherApiTwo
 import com.skrebtsov.eugeney.weather.model.data.DataCity
 import com.skrebtsov.eugeney.weather.model.data.DataCity_GetCoordCityFactory.getCoordCity
 import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
@@ -8,7 +10,7 @@ import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class UseTwoDataSource @Inject constructor(private val weatherApiTwo: WeatherApiTwo) {
+class RepositoryTwoApi @Inject constructor(private val weatherApiTwo: WeatherApiTwo) {
     fun getWeatherApiYandex(): WeatherApiTwo {
         return weatherApiTwo
     }
@@ -22,5 +24,4 @@ class UseTwoDataSource @Inject constructor(private val weatherApiTwo: WeatherApi
                 parseDateWeatherYandexCity(ParseResponse(), it)
             }
     }
-
 }

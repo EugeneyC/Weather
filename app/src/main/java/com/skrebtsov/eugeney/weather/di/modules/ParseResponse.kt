@@ -1,4 +1,4 @@
-package com.skrebtsov.eugeney.weather.model
+package com.skrebtsov.eugeney.weather.di.modules
 
 import com.skrebtsov.eugeney.weather.model.models.firstapi.DataWeatherCity
 import com.skrebtsov.eugeney.weather.model.models.firstapi.WeatherOpenWeathermapResponse
