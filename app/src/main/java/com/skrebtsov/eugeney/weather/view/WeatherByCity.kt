@@ -19,7 +19,8 @@ import javax.inject.Inject
 class WeatherByCity : AppCompatActivity() {
     lateinit var binding: ActivityWeatherByCityBinding
 
-    @Inject lateinit var viewModel: WeatherByCityViewModel
+    @Inject
+    lateinit var viewModelImpl: WeatherByCityViewModel
 
     private val disposableBag = CompositeDisposable()
 
@@ -28,15 +29,15 @@ class WeatherByCity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_weather_by_city)
         binding.lifecycleOwner = this
-        binding.setVariable(BR.viewmodel, viewModel)
+        binding.setVariable(BR.viewmodel, viewModelImpl)
 
         initAdapter()
 
         val disposable = RxAdapterView.itemSelections(binding.spinnerCity)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                viewModel.getWeather(getListCity(DataCity())[it])
-                viewModel.getWeatherAutoUpdate(getListCity(DataCity())[it])
+                viewModelImpl.getWeather(getListCity(DataCity())[it])
+                viewModelImpl.getWeatherAutoUpdate(getListCity(DataCity())[it])
             }
         disposableBag.add(disposable)
     }
@@ -49,6 +50,6 @@ class WeatherByCity : AppCompatActivity() {
     private fun initAdapter() {
         val arrayAdapter: ArrayAdapter<String> =
             ArrayAdapter<String>(this, R.layout.spinner_style, getListCity(DataCity()))
-            binding.spinnerCity.adapter = arrayAdapter
+        binding.spinnerCity.adapter = arrayAdapter
     }
 }

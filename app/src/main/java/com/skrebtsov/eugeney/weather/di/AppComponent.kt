@@ -10,8 +10,7 @@ import dagger.Component
 
 @Component(
     modules = [NetworkModuleYandex::class,
-        NetworkModuleOpenweathermap::class,
-        ParseResponse::class, DataCity::class]
+        NetworkModuleOpenweathermap::class, DataCity::class]
 )
 interface AppComponent {
     fun inject(appCompatActivity: WeatherByCity)

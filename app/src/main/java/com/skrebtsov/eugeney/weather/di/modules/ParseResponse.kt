@@ -5,13 +5,13 @@ import com.skrebtsov.eugeney.weather.model.models.firstapi.WeatherOpenWeathermap
 import com.skrebtsov.eugeney.weather.model.models.secondapi.WeatherYandexResponse
 import dagger.Module
 import dagger.Provides
+import javax.inject.Inject
 import javax.inject.Singleton
 
 
-@Module
-class ParseResponse {
-    @Singleton
-    @Provides
+
+class ParseResponse @Inject constructor() {
+
     fun parseDateWeatherYandexCity(weatherYandexResponse: WeatherYandexResponse): DataWeatherCity {
         return DataWeatherCity(
             tempInCity = weatherYandexResponse.fact.temp.toString(),
@@ -20,8 +20,7 @@ class ParseResponse {
             icon = weatherYandexResponse.fact.icon
         )
     }
-    @Singleton
-    @Provides
+
     fun parseDateWeatherCity(weatherOpenWeatherMapResponse: WeatherOpenWeathermapResponse): DataWeatherCity {
         return DataWeatherCity(
             nameCity = weatherOpenWeatherMapResponse.name.toString(),
